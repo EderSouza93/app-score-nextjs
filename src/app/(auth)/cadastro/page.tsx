@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PasswordInput from "@/components/password-input";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
-  CardTitle,
+  CardHeader
 } from "@/components/ui/card";
 import {
   Select,
@@ -23,6 +23,8 @@ import api from "@/services/api";
 import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Logo from "@/components/logoComponent";
+import BackgroundLayout from "@/components/backgroundCurved";
 
 interface Cargo {
   id: number;
@@ -54,7 +56,7 @@ export default function RegisterPage() {
     api
       .get("/cargos")
       .then((response) => setCargos(response.data))
-      .catch((error) => console.error("Erro ao buscar cargpos:", error));
+      .catch((error) => console.error("Erro ao buscar cargos:", error));
 
     api
       .get("/equipes")
@@ -66,7 +68,7 @@ export default function RegisterPage() {
     e.preventDefault();
 
     if (formData.senha !== formData.confirmarSenha) {
-      toast.error("As senhas não concidem!");
+      toast.error("As senhas não coincidem!");
       return;
     }
 
@@ -98,148 +100,143 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-[400px]">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center">
-            <img src="/assets/logo.svg" alt="Liga Premium" />
-          </div>
-          <CardTitle className="text-3xl font-bold text-center text-[#454B60]">
+    <BackgroundLayout>
+      <main className="relative min-h-screen">
+        {/* Logo */}
+        <div className="flex justify-center items-center pt-10 lg:justify-start lg:pt-0">
+          <Logo
+            src="assets/logo.svg"
+            alt="Logo Liga COHAB"
+            width={100}
+            height={100}
+            className="lg:ml-8"
+            priority={true}
+          />
+        </div>
+
+        {/* Formulário */}
+        <div className="relative z-10 flex flex-col items-center justify-center mt-8 lg:mt-0">
+          <h1 className="text-3xl font-bold mb-8 text-center text-[#454B60]">
             Cadastro
-          </CardTitle>
-          <CardDescription className="text-center font-bold text-[#454B60] pt-12">
-            Insira seus dados para cadastro
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Input
-                id="name"
-                placeholder="Nome"
-                value={formData.nome}
-                onChange={(e) =>
-                  setFormData({ ...formData, nome: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Input
-                id="email"
-                placeholder="Email"
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Input
-                id="password"
-                placeholder="Senha"
-                type="password"
-                value={formData.senha}
-                onChange={(e) =>
-                  setFormData({ ...formData, senha: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Input
-                id="confirmPassword"
-                placeholder="Confirme a senha"
-                type="password"
-                value={formData.confirmarSenha}
-                onChange={(e) =>
-                  setFormData({ ...formData, confirmarSenha: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Select
-                value={formData.cargoId || undefined}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, cargoId: value })
-                }
-                required
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Cargo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">Cargo</SelectItem>
-                  {cargos.map((cargos) => (
-                    <SelectItem key={cargos.id} value={cargos.id.toString()}>
-                      {cargos.nome}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Select
-                value={formData.equipeId || undefined}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, equipeId: value })
-                }
-                required
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Equipe" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="0">Equipe</SelectItem>
-                  {equipes.map((equipes) => (
-                    <SelectItem key={equipes.id} value={equipes.id.toString()}>
-                      {equipes.nome}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Input
-                id="instagram"
-                placeholder="Instagram"
-                value={formData.instagram}
-                onChange={(e) =>
-                  setFormData({ ...formData, instagram: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div className="text-center text-sm py-5">
-              <Checkbox required id="terms" />
-              
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                <Link href="/login" className="text-primary hover:underline mx-3">
-                  Eu aceito os termos e condições
-                </Link>
-              </label>
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-[#222872] hover:bg-blue-500"
-              disabled={loading}
-            >
-              {loading ? (
-                <ClipLoader size={20} color="#ffffff" loading={loading} />
-              ) : (
-                "Cadastrar"
-              )}
-            </Button>
-          </form>
-        </CardContent>
+          </h1>
+          <Card className="w-[350px] md:w-[400px] lg:w-[500px] mb-24">
+            <CardHeader className="space-y-1">
+              <CardDescription className="text-center font-bold text-[#454B60]">
+                Insira seus dados para cadastro
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Inputs */}
+                <Input
+                  id="name"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Nome"
+                  value={formData.nome}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nome: e.target.value })
+                  }
+                  required
+                />
+                <Input
+                  id="email"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                />
+                <PasswordInput
+                  id="password"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Senha"
+                  value={formData.senha}
+                  onChange={(e) =>
+                    setFormData({ ...formData, senha: e.target.value })
+                  }
+                  required
+                />
+                <PasswordInput
+                  id="confirmPassword"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Confirme a senha"
+                  value={formData.confirmarSenha}
+                  onChange={(e) =>
+                    setFormData({ ...formData, confirmarSenha: e.target.value })
+                  }
+                  required
+                />
+
+                {/* Selects */}
+                <Select
+                  value={formData.cargoId || undefined}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, cargoId: value })
+                  }
+                  required
+                >
+                  <SelectTrigger className="w-full bg-[#F2F6FA] border-none">
+                    <SelectValue placeholder="Cargo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cargos.map((cargo) => (
+                      <SelectItem key={cargo.id} value={cargo.id.toString()}>
+                        {cargo.nome}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={formData.equipeId || undefined}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, equipeId: value })
+                  }
+                  required
+                >
+                  <SelectTrigger className="w-full bg-[#F2F6FA] border-none">
+                    <SelectValue placeholder="Equipe" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {equipes.map((equipe) => (
+                      <SelectItem key={equipe.id} value={equipe.id.toString()}>
+                        {equipe.nome}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Checkbox */}
+                <div className="flex items-center space-x-2">
+                  <Checkbox required id="terms" />
+                  <label htmlFor="terms" className="text-sm leading-none">
+                    Eu aceito os{" "}
+                    <Link href="/termos" className="text-primary hover:underline">
+                      termos e condições
+                    </Link>
+                  </label>
+                </div>
+
+                {/* Botão */}
+                <Button
+                  type="submit"
+                  className="w-full bg-[#222872] hover:bg-blue-500"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ClipLoader size={20} color="#ffffff" loading={loading} />
+                  ) : (
+                    "Cadastrar"
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
         <ToastContainer />
-      </Card>
-    </div>
+      </main>
+    </BackgroundLayout>
   );
 }

@@ -1,98 +1,120 @@
-'use client';
+"use client";
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import axios from "axios";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Building2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import PasswordInput from "@/components/password-input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Link from "next/link";
+import api from "@/services/api";
+import { ClipLoader } from "react-spinners";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Logo from "@/components/logoComponent";
+import BackgroundLayout from "@/components/backgroundCurved";
 
-// Schema de validação com Zod
-const loginSchema = z.object({
-  email: z.string().email("Email inválido").nonempty("O email é obrigatório"),
-  senha: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
-});
-
-// Tipagem derivada do esquema
-type LoginFormInputs = z.infer<typeof loginSchema>;
-
-const LoginCard: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormInputs>({
-    resolver: zodResolver(loginSchema),
+export default function LoginCard() {
+  const [formData, setFormData] = useState({
+    email: "",
+    senha: "",
   });
 
-  const onSubmit = async (data: LoginFormInputs) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setLoading(true);
+
     try {
-      const response = await axios.post("/api/login", data);
-      console.log("Login bem-sucedido:", response.data);
-      // Adicione lógica para salvar tokens ou redirecionar o usuário
+      const response = await api.post("/api/login", formData);
+      toast.success("Login realizado com sucesso!");
+      console.log("Resposta do servidor:", response.data);
+      // Aqui você pode salvar o token no localStorage ou redirecionar o usuário
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      // Adicione lógica para exibir mensagens de erro ao usuário
+      console.error("Erro durante o login:", error);
+      toast.error("Erro ao realizar login. Verifique suas credenciais.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-[350px]">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <Building2 className="h-8 w-8" />
-          </div>
-          <CardTitle className="text-2xl text-center">Liga COHAB</CardTitle>
-          <CardDescription className="text-center">
-            Entre com suas credenciais para acessar
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                {...register("email")}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="senha">Senha</Label>
-              <Input
-                id="senha"
-                type="password"
-                placeholder="Sua senha"
-                {...register("senha")}
-              />
-              {errors.senha && (
-                <p className="text-red-500 text-sm">{errors.senha.message}</p>
-              )}
-            </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Entrando..." : "Entrar"}
-            </Button>
-            <div className="text-center text-sm">
-              Ainda não possui sua conta?{" "}
-              <Link href="/cadastro" className="text-primary hover:underline">
-                realize seu cadastro
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    <BackgroundLayout>
+      <main className="relative min-h-screen">
+        <div className="flex justify-center items-center h-20 my-8 pt-20 md:pt-0 lg:items-start lg:justify-start lg:pt-0">
+          <Logo
+            src="assets/logo.svg"
+            alt="Logo Liga COHAB"
+            width={100}
+            height={100}
+            className="lg:ml-8"
+            priority={true}
+          />
+        </div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-background lg:min-h-0">
+          <h1 className="text-3xl font-bold mb-8 text-center text-[#454B60]">
+            Login
+          </h1>
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-bold text-[#454B60]">
+                Bem-vindo de volta!
+              </CardTitle>
+              <CardDescription>
+                Faça login para acessar sua conta
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <Input
+                  type="email"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                />
+                <PasswordInput
+                  placeholder="Senha"
+                  className="bg-[#F2F6FA] border-none"
+                  value={formData.senha}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, senha: e.target.value })
+                  }
+                  required
+                />
+                <Button
+                  type="submit"
+                  className="w-full bg-[#222872] hover:bg-blue-500"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ClipLoader size={20} color="#ffffff" />
+                  ) : (
+                    "Entrar"
+                  )}
+                </Button>
+              </form>
+              <div className="text-center mt-4 text-sm">
+                Não possui uma conta?{" "}
+                <Link href="/cadastro" className="text-primary hover:underline">
+                  Cadastre-se
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+          <ToastContainer />
+        </div>
+      </main>
+    </BackgroundLayout>
   );
-};
-
-export default LoginCard;
+}

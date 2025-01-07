@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Liga COHAB',
   description: 'Aplicativo de gestão da Liga COHAB',
-  manifest: '/manifest.json',
+  // manifest: '/manifest.json',
 };
 
 export const viewport: ViewportLayout = {
