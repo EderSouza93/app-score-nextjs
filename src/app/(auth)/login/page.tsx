@@ -47,8 +47,9 @@ export default function LoginCard() {
 
   return (
     <BackgroundLayout>
-      <main className="relative min-h-screen">
-        <div className="flex justify-center items-center h-20 my-8 pt-20 md:pt-0 lg:items-start lg:justify-start lg:pt-0">
+      <main className="relative">
+        {/* Logo */}
+        <div className="flex justify-center items-center pt-10 lg:justify-start lg:pt-0">
           <Logo
             src="assets/logo.svg"
             alt="Logo Liga COHAB"
@@ -58,11 +59,13 @@ export default function LoginCard() {
             priority={true}
           />
         </div>
-        <div className="min-h-screen flex flex-col items-center justify-center bg-background lg:min-h-0">
+
+        {/* Formulário */}
+        <div className="relative z-10 flex flex-col items-center justify-center mt-8 lg:mt-0">
           <h1 className="text-3xl font-bold mb-8 text-center text-[#454B60]">
             Login
           </h1>
-          <Card className="w-full max-w-md">
+          <Card className="w-[350px] md:w-[400px] lg:w-[500px] mb-24">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-bold text-[#454B60]">
                 Bem-vindo de volta!
@@ -104,7 +107,7 @@ export default function LoginCard() {
                   )}
                 </Button>
               </form>
-              <div className="text-center mt-4 text-sm">
+              <div className="text-center text-sm">
                 Não possui uma conta?{" "}
                 <Link href="/cadastro" className="text-primary hover:underline">
                   Cadastre-se
