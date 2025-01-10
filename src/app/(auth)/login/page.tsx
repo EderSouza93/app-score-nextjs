@@ -33,7 +33,7 @@ export default function LoginCard() {
     setLoading(true);
 
     try {
-      const response = await api.post("/api/login", formData);
+      const response = await api.post("/login", formData);
       toast.success("Login realizado com sucesso!");
       console.log("Resposta do servidor:", response.data);
       // Aqui você pode salvar o token no localStorage ou redirecionar o usuário

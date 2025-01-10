@@ -72,19 +72,22 @@ export default function RegisterPage() {
       return;
     }
 
-    const { confirmarSenha, ...userData } = formData;
+    const cargoSelecionado = cargos.find(cargo => cargo.id === parseInt(formData.cargoId, 10));
+    const equipeSelecionada = equipes.find(equipe => equipe.id === parseInt(formData.equipeId,10));
 
     const updatedFormData = {
-      ...userData,
-      cargoId: parseInt(formData.cargoId, 10),
-      equipeId: parseInt(formData.equipeId, 10),
+      ...formData,
+      cargo: cargoSelecionado ? cargoSelecionado.nome : '',
+      equipe: equipeSelecionada ? equipeSelecionada.nome : ''
     };
+
+    console.log(updatedFormData)
 
     setLoading(true);
     setErrorMessage("");
 
     api
-      .post("/users", updatedFormData)
+      .post("/cadastrar", updatedFormData)
       .then((response) => {
         toast.success("Usuário cadastrado com sucesso!");
         console.log(response.data);
@@ -146,6 +149,16 @@ export default function RegisterPage() {
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                />
+                <Input
+                  id="instagram"
+                  className="bg-[#F2F6FA] border-none"
+                  placeholder="Instagram"
+                  value={formData.instagram}
+                  onChange={(e) =>
+                    setFormData({ ...formData, instagram: e.target.value })
                   }
                   required
                 />
