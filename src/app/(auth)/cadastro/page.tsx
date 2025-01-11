@@ -20,11 +20,13 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import api from "@/services/api";
+import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logo from "@/components/logoComponent";
 import BackgroundLayout from "@/components/backgroundCurved";
+
 
 interface Cargo {
   id: number;
@@ -56,13 +58,21 @@ export default function RegisterPage() {
     api
       .get("/cargos")
       .then((response) => setCargos(response.data))
-      .catch((error) => console.error("Erro ao buscar cargos:", error));
+      .catch((error) => {
+        console.error("Erro ao buscar cargos:", error);
+        setErrorMessage("Erro ao carregar cargos. Por favor, tente novamente.");
+      });
 
     api
       .get("/equipes")
       .then((response) => setEquipes(response.data))
-      .catch((error) => console.error("Erro ao buscar equipes:", error));
-  }, []);
+      .catch((error) => {
+        console.error("Erro ao buscar equipes:", error);
+        setErrorMessage("Erro ao carregar cargos. Por favor, tente novamente.");
+  });
+ }, []);
+
+  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,8 +91,6 @@ export default function RegisterPage() {
       equipe: equipeSelecionada ? equipeSelecionada.nome : ''
     };
 
-    console.log(updatedFormData)
-
     setLoading(true);
     setErrorMessage("");
 
@@ -90,6 +98,9 @@ export default function RegisterPage() {
       .post("/cadastrar", updatedFormData)
       .then((response) => {
         toast.success("Usuário cadastrado com sucesso!");
+        setTimeout(() => {
+          router.push("/login")
+        }, 5000);
         console.log(response.data);
       })
       .catch((error) => {
@@ -101,6 +112,10 @@ export default function RegisterPage() {
         setLoading(false);
       });
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value})
+  }
 
   return (
     <BackgroundLayout>
@@ -129,16 +144,19 @@ export default function RegisterPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {errorMessage && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                  {errorMessage}
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Inputs */}
                 <Input
-                  id="name"
+                  id="nome"
                   className="bg-[#F2F6FA] border-none"
                   placeholder="Nome"
                   value={formData.nome}
-                  onChange={(e) =>
-                    setFormData({ ...formData, nome: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   required
                 />
                 <Input
@@ -147,9 +165,7 @@ export default function RegisterPage() {
                   placeholder="Email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   required
                 />
                 <Input
@@ -157,29 +173,23 @@ export default function RegisterPage() {
                   className="bg-[#F2F6FA] border-none"
                   placeholder="Instagram"
                   value={formData.instagram}
-                  onChange={(e) =>
-                    setFormData({ ...formData, instagram: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   required
                 />
                 <PasswordInput
-                  id="password"
+                  id="senha"
                   className="bg-[#F2F6FA] border-none"
                   placeholder="Senha"
                   value={formData.senha}
-                  onChange={(e) =>
-                    setFormData({ ...formData, senha: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   required
                 />
                 <PasswordInput
-                  id="confirmPassword"
+                  id="confirmarSenha"
                   className="bg-[#F2F6FA] border-none"
                   placeholder="Confirme a senha"
                   value={formData.confirmarSenha}
-                  onChange={(e) =>
-                    setFormData({ ...formData, confirmarSenha: e.target.value })
-                  }
+                  onChange={handleInputChange}
                   required
                 />
 

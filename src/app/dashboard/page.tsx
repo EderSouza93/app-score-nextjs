@@ -3,10 +3,8 @@
 import React, { useState } from "react";
 import {
   Layout,
-  BarChart,
   User,
   Users,
-  ChevronRight,
   TrendingUp,
   Calendar,
   Award,
