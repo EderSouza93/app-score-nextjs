@@ -1,49 +1,49 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import PasswordInput from "@/components/password-input";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import PasswordInput from '@/components/password-input'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import api from "@/services/api";
-import { ClipLoader } from "react-spinners";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Logo from "@/components/logoComponent";
-import BackgroundLayout from "@/components/backgroundCurved";
+} from '@/components/ui/card'
+import Link from 'next/link'
+import api from '@/services/api'
+import { ClipLoader } from 'react-spinners'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Logo from '@/components/logoComponent'
+import BackgroundLayout from '@/components/backgroundCurved'
 
 export default function LoginCard() {
   const [formData, setFormData] = useState({
-    email: "",
-    senha: "",
-  });
+    email: '',
+    senha: '',
+  })
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const response = await api.post("/login", formData);
-      toast.success("Login realizado com sucesso!");
-      console.log("Resposta do servidor:", response.data);
+      const response = await api.post('/login', formData)
+      toast.success('Login realizado com sucesso!')
+      console.log('Resposta do servidor:', response.data)
       // Aqui você pode salvar o token no localStorage ou redirecionar o usuário
     } catch (error) {
-      console.error("Erro durante o login:", error);
-      toast.error("Erro ao realizar login. Verifique suas credenciais.");
+      console.error('Erro durante o login:', error)
+      toast.error('Erro ao realizar login. Verifique suas credenciais.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <BackgroundLayout>
@@ -103,12 +103,12 @@ export default function LoginCard() {
                   {loading ? (
                     <ClipLoader size={20} color="#ffffff" />
                   ) : (
-                    "Entrar"
+                    'Entrar'
                   )}
                 </Button>
               </form>
               <div className="text-center text-sm">
-                Não possui uma conta?{" "}
+                Não possui uma conta?{' '}
                 <Link href="/cadastro" className="text-primary hover:underline">
                   Cadastre-se
                 </Link>
@@ -119,5 +119,5 @@ export default function LoginCard() {
         </div>
       </main>
     </BackgroundLayout>
-  );
+  )
 }

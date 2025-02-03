@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Layout,
   User,
@@ -9,11 +9,11 @@ import {
   Calendar,
   Award,
   Menu,
-} from "lucide-react";
+} from 'lucide-react'
 
 const Dashboard = () => {
-  const [activeRole, setActiveRole] = useState("corretor");
-  const [menuAberto, setMenuAberto] = useState(false);
+  const [activeRole, setActiveRole] = useState('corretor')
+  const [menuAberto, setMenuAberto] = useState(false)
 
   // Cartões de métricas reutilizáveis
   const renderCartoesMetricas = () => (
@@ -55,7 +55,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  );
+  )
 
   // Menu mobile
   const renderMenuMobile = () => (
@@ -72,11 +72,11 @@ const Dashboard = () => {
           <div className="flex flex-col space-y-2">
             <button
               onClick={() => {
-                setActiveRole("corretor");
-                setMenuAberto(false);
+                setActiveRole('corretor')
+                setMenuAberto(false)
               }}
               className={`p-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "corretor" ? "bg-blue-500 text-white" : ""
+                activeRole === 'corretor' ? 'bg-blue-500 text-white' : ''
               }`}
             >
               <User size={20} />
@@ -84,11 +84,11 @@ const Dashboard = () => {
             </button>
             <button
               onClick={() => {
-                setActiveRole("gerente");
-                setMenuAberto(false);
+                setActiveRole('gerente')
+                setMenuAberto(false)
               }}
               className={`p-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "gerente" ? "bg-blue-500 text-white" : ""
+                activeRole === 'gerente' ? 'bg-blue-500 text-white' : ''
               }`}
             >
               <Users size={20} />
@@ -96,11 +96,11 @@ const Dashboard = () => {
             </button>
             <button
               onClick={() => {
-                setActiveRole("admin");
-                setMenuAberto(false);
+                setActiveRole('admin')
+                setMenuAberto(false)
               }}
               className={`p-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "admin" ? "bg-blue-500 text-white" : ""
+                activeRole === 'admin' ? 'bg-blue-500 text-white' : ''
               }`}
             >
               <Layout size={20} />
@@ -110,11 +110,11 @@ const Dashboard = () => {
         </div>
       )}
     </div>
-  );
+  )
 
   const renderConteudoPorPerfil = () => {
     switch (activeRole) {
-      case "corretor":
+      case 'corretor':
         return (
           <div className="space-y-6">
             {renderCartoesMetricas()}
@@ -137,7 +137,7 @@ const Dashboard = () => {
                     <div className="w-full md:w-1/2 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-blue-500 h-2 rounded-full"
-                        style={{ width: "75%" }}
+                        style={{ width: '75%' }}
                       ></div>
                     </div>
                   </div>
@@ -146,7 +146,7 @@ const Dashboard = () => {
                     <div className="w-full md:w-1/2 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-green-500 h-2 rounded-full"
-                        style={{ width: "90%" }}
+                        style={{ width: '90%' }}
                       ></div>
                     </div>
                   </div>
@@ -154,9 +154,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        );
+        )
 
-      case "gerente":
+      case 'gerente':
         return (
           <div className="space-y-6">
             {renderCartoesMetricas()}
@@ -190,9 +190,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        );
+        )
 
-      case "admin":
+      case 'admin':
         return (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -244,9 +244,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        );
+        )
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -255,29 +255,29 @@ const Dashboard = () => {
           {renderMenuMobile()}
           <div className="hidden lg:flex space-x-4 mb-6">
             <button
-              onClick={() => setActiveRole("corretor")}
+              onClick={() => setActiveRole('corretor')}
               className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "corretor"
-                  ? "bg-blue-500 text-white"
-                  : "bg-white"
+                activeRole === 'corretor'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-white'
               }`}
             >
               <User size={20} />
               <span>Corretor</span>
             </button>
             <button
-              onClick={() => setActiveRole("gerente")}
+              onClick={() => setActiveRole('gerente')}
               className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "gerente" ? "bg-blue-500 text-white" : "bg-white"
+                activeRole === 'gerente' ? 'bg-blue-500 text-white' : 'bg-white'
               }`}
             >
               <Users size={20} />
               <span>Gerente</span>
             </button>
             <button
-              onClick={() => setActiveRole("admin")}
+              onClick={() => setActiveRole('admin')}
               className={`px-4 py-2 rounded-lg flex items-center space-x-2 ${
-                activeRole === "admin" ? "bg-blue-500 text-white" : "bg-white"
+                activeRole === 'admin' ? 'bg-blue-500 text-white' : 'bg-white'
               }`}
             >
               <Layout size={20} />
@@ -288,7 +288,7 @@ const Dashboard = () => {
         {renderConteudoPorPerfil()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

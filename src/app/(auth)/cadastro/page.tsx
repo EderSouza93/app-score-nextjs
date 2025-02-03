@@ -1,120 +1,123 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import PasswordInput from "@/components/password-input";
+import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import PasswordInput from '@/components/password-input'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader
-} from "@/components/ui/card";
+  CardHeader,
+} from '@/components/ui/card'
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
-import api from "@/services/api";
-import { useRouter } from "next/navigation";
-import { ClipLoader } from "react-spinners";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Logo from "@/components/logoComponent";
-import BackgroundLayout from "@/components/backgroundCurved";
-
+} from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
+import Link from 'next/link'
+import api from '@/services/api'
+import { useRouter } from 'next/navigation'
+import { ClipLoader } from 'react-spinners'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Logo from '@/components/logoComponent'
+import BackgroundLayout from '@/components/backgroundCurved'
 
 interface Cargo {
-  id: number;
-  nome: string;
+  id: number
+  nome: string
 }
 
 interface Equipe {
-  id: number;
-  nome: string;
+  id: number
+  nome: string
 }
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    senha: "",
-    confirmarSenha: "",
-    instagram: "",
-    cargoId: "",
-    equipeId: "",
-  });
+    nome: '',
+    email: '',
+    senha: '',
+    confirmarSenha: '',
+    instagram: '',
+    cargoId: '',
+    equipeId: '',
+  })
 
-  const [cargos, setCargos] = useState<Cargo[]>([]);
-  const [equipes, setEquipes] = useState<Equipe[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [cargos, setCargos] = useState<Cargo[]>([])
+  const [equipes, setEquipes] = useState<Equipe[]>([])
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     api
-      .get("/cargos")
+      .get('/cargos')
       .then((response) => setCargos(response.data))
       .catch((error) => {
-        console.error("Erro ao buscar cargos:", error);
-        setErrorMessage("Erro ao carregar cargos. Por favor, tente novamente.");
-      });
+        console.error('Erro ao buscar cargos:', error)
+        setErrorMessage('Erro ao carregar cargos. Por favor, tente novamente.')
+      })
 
     api
-      .get("/equipes")
+      .get('/equipes')
       .then((response) => setEquipes(response.data))
       .catch((error) => {
-        console.error("Erro ao buscar equipes:", error);
-        setErrorMessage("Erro ao carregar cargos. Por favor, tente novamente.");
-  });
- }, []);
+        console.error('Erro ao buscar equipes:', error)
+        setErrorMessage('Erro ao carregar cargos. Por favor, tente novamente.')
+      })
+  }, [])
 
   const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (formData.senha !== formData.confirmarSenha) {
-      toast.error("As senhas não coincidem!");
-      return;
+      toast.error('As senhas não coincidem!')
+      return
     }
 
-    const cargoSelecionado = cargos.find(cargo => cargo.id === parseInt(formData.cargoId, 10));
-    const equipeSelecionada = equipes.find(equipe => equipe.id === parseInt(formData.equipeId,10));
+    const cargoSelecionado = cargos.find(
+      (cargo) => cargo.id === parseInt(formData.cargoId, 10)
+    )
+    const equipeSelecionada = equipes.find(
+      (equipe) => equipe.id === parseInt(formData.equipeId, 10)
+    )
 
     const updatedFormData = {
       ...formData,
       cargo: cargoSelecionado ? cargoSelecionado.nome : '',
-      equipe: equipeSelecionada ? equipeSelecionada.nome : ''
-    };
+      equipe: equipeSelecionada ? equipeSelecionada.nome : '',
+    }
 
-    setLoading(true);
-    setErrorMessage("");
+    setLoading(true)
+    setErrorMessage('')
 
     api
-      .post("/cadastrar", updatedFormData)
+      .post('/cadastrar', updatedFormData)
       .then((response) => {
-        toast.success("Usuário cadastrado com sucesso!");
+        toast.success('Usuário cadastrado com sucesso!')
         setTimeout(() => {
-          router.push("/login")
-        }, 5000);
-        console.log(response.data);
+          router.push('/login')
+        }, 5000)
+        console.log(response.data)
       })
       .catch((error) => {
-        console.error("Erro ao cadastrar usuário:", error);
-        setErrorMessage("Erro ao cadastrar usuário");
-        toast.error("Erro ao cadastrar usuário");
+        console.error('Erro ao cadastrar usuário:', error)
+        setErrorMessage('Erro ao cadastrar usuário')
+        toast.error('Erro ao cadastrar usuário')
       })
       .finally(() => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value})
+    setFormData({ ...formData, [e.target.id]: e.target.value })
   }
 
   return (
@@ -235,8 +238,11 @@ export default function RegisterPage() {
                 <div className="flex items-center space-x-2">
                   <Checkbox required id="terms" />
                   <label htmlFor="terms" className="text-sm leading-none">
-                    Eu aceito os{" "}
-                    <Link href="/termos" className="text-primary hover:underline">
+                    Eu aceito os{' '}
+                    <Link
+                      href="/termos"
+                      className="text-primary hover:underline"
+                    >
                       termos e condições
                     </Link>
                   </label>
@@ -251,7 +257,7 @@ export default function RegisterPage() {
                   {loading ? (
                     <ClipLoader size={20} color="#ffffff" loading={loading} />
                   ) : (
-                    "Cadastrar"
+                    'Cadastrar'
                   )}
                 </Button>
               </form>
@@ -261,5 +267,5 @@ export default function RegisterPage() {
         <ToastContainer />
       </main>
     </BackgroundLayout>
-  );
+  )
 }
