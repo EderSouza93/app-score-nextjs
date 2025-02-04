@@ -1,7 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 
 interface BackgroundLayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({ children }) => {
@@ -13,8 +13,8 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({ children }) => {
         <div
           className="absolute top-0 w-full h-1/2 bg-white"
           style={{
-            borderBottomLeftRadius: "75% 75%",
-            borderBottomRightRadius: "75% 75%",
+            borderBottomLeftRadius: '75% 75%',
+            borderBottomRightRadius: '75% 75%',
           }}
         />
       </div>
@@ -22,7 +22,7 @@ const BackgroundLayout: React.FC<BackgroundLayoutProps> = ({ children }) => {
       {/* Content */}
       <div className="relative z-10">{children}</div>
     </div>
-  );
-};
+  )
+}
 
-export default BackgroundLayout;
+export default BackgroundLayout

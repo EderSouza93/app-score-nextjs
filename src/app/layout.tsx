@@ -1,21 +1,20 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { Toaster } from '@/components/ui/toaster';
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { Toaster } from '@/components/ui/toaster'
 
-
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Liga COHAB',
   description: 'Aplicativo de gestão da Liga COHAB',
   // manifest: '/manifest.json',
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
@@ -25,8 +24,8 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
-  );
+  )
 }
