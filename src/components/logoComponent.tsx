@@ -11,7 +11,7 @@ interface LogoProps {
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
   quality?: number
   onLoad?: () => void
-  onError?: (error: Error) => void
+  onError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void
 }
 
 const Logo: FC<LogoProps> = ({
@@ -39,7 +39,7 @@ const Logo: FC<LogoProps> = ({
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         quality={quality}
         onLoad={onLoad}
-        onError={onError as any}
+        onError={(event) => onError && onError(event)}
       />
     </div>
   )
